@@ -1,14 +1,13 @@
-<img style="width: 7em; text-align: center;" src="logo.svg">
+<img style="width: 7em; text-align: center;" src="https://uutils.github.io/logo.svg">
 <h1>uutils coreutils</h1>
 <h1 class="subtitle">&amp; the quest for compatibility</h1>
 
 --- whoami
 
 - Terts Diepraam
-
 - Recent graduate of TU Delft
-
 - A maintainer on uutils since 2021
+- I love programming languages! (And Rust of course)
 
 --- uname
 
@@ -149,7 +148,7 @@ Cross-platform reimplementation of the coreutils in Rust
 - GNU is most familiar
 - Every quirk is used by _someone_
 
-<img width="40%" src="gnu-results.png">
+<img width="40%" src="https://github.com/uutils/coreutils-tracking/blob/main/gnu-results.png?raw=true">
 
 ---
 
@@ -159,9 +158,9 @@ The problem:
 
 # `C != Rust`
 
---- The Topic
+--- Thesis
 
-**Emulating C behaviour in Rust**
+**The language determines the implementation**
 
 ---
 
@@ -338,7 +337,6 @@ impl Options<Arg> for Settings {
     fn apply(&mut self, arg: Arg) {
         match arg {
             Arg::All => self.which_files = Files::All,
-            Arg::AlmostAll => self.which_files = Files::AlmostAll,
             Arg::Sort(s) => self.sort = s,
         }
     }

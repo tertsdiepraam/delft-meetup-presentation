@@ -197,15 +197,10 @@ footer .info {
             <div class="slide-content-container">
                 <div class="slide-content">
                 <ul>
-<li>
-<p>Terts Diepraam</p>
-</li>
-<li>
-<p>Recent graduate of TU Delft</p>
-</li>
-<li>
-<p>A maintainer on uutils since 2021</p>
-</li>
+<li>Terts Diepraam</li>
+<li>Recent graduate of TU Delft</li>
+<li>A maintainer on uutils since 2021</li>
+<li>I love programming languages! (And Rust of course)</li>
 </ul>
 
                 </div>
@@ -434,12 +429,12 @@ The problem:
         <div class="slide">
             <div class="title">
                 <div>
-                The Topic
+                Thesis
                 </div>
             </div>
             <div class="slide-content-container">
                 <div class="slide-content">
-                <p><strong>Emulating C behaviour in Rust</strong></p>
+                <p><strong>The language determines the implementation</strong></p>
 
                 </div>
             </div>
@@ -814,7 +809,6 @@ impl Options&lt;Arg&gt; for Settings {
     fn apply(&amp;mut self, arg: Arg) {
         match arg {
             Arg::All =&gt; self.which_files = Files::All,
-            Arg::AlmostAll =&gt; self.which_files = Files::AlmostAll,
             Arg::Sort(s) =&gt; self.sort = s,
         }
     }

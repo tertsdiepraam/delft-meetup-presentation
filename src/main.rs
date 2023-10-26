@@ -113,6 +113,6 @@ fn main() {
         rendered.push(create_slide(&page.title, &html_output));
     }
 
-    let mut page_file = File::create(build_dir.join("index.html")).unwrap();
+    let mut page_file = File::create("index.html").unwrap();
     write!(page_file, "{}", create_page(rendered.join("\n")),).unwrap();
 }
