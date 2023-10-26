@@ -15,14 +15,17 @@ fn create_page(content: String) -> String {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
+
 </head>
 <body>
     <style>{STYLE}</style>
-    <main>
-        <div id="content">
-            {content}
-        </div>
-    </main>
+    {content}
     <footer>
         <div class="info">Terts Diepraam, Rust at TU Delft, 2023-10-26</div>
         <div>
@@ -34,7 +37,9 @@ fn create_page(content: String) -> String {
         </div>
     </footer>
     <div id="progress"></div>
+    <div id="goto-modal" class="hidden"><input id="goto-modal-input" type="number"></div>
     <script>{SCRIPT}</script>
+    <script>hljs.highlightAll();</script>
 </body>
     "#
     )
@@ -51,8 +56,10 @@ fn create_slide(title: &str, content: &str) -> String {
                 {title}
                 </div>
             </div>
-            <div class="slide-content">
-            {content}
+            <div class="slide-content-container">
+                <div class="slide-content">
+                {content}
+                </div>
             </div>
         </div>        
     "#
@@ -72,6 +79,7 @@ fn main() {
     let _ = std::fs::create_dir(build_dir);
 
     let _ = std::fs::copy("logo.svg", build_dir.join("logo.svg"));
+    let _ = std::fs::copy("gnu-results.png", build_dir.join("gnu-results.png"));
 
     let mut pages = Vec::new();
     let mut current_page = Page {

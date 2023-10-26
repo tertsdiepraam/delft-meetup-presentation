@@ -1,6 +1,6 @@
 <img style="width: 7em; text-align: center;" src="logo.svg">
 <h1>uutils coreutils</h1>
-<h1 class="subtitle">something something compatibility</h1>
+<h1 class="subtitle">&amp; the quest for compatibility</h1>
 
 --- whoami
 
@@ -9,6 +9,12 @@
 - Recent graduate of TU Delft
 
 - A maintainer on uutils since 2021
+
+--- uname
+
+# uutils coreutils
+
+Cross-platform reimplementation of the coreutils in Rust
 
 --- GNU Coreutils
 
@@ -129,12 +135,6 @@
 - Written in C
 - Maintained by the FSF
 
----
-
-# uutils coreutils
-
-Cross-platform reimplementation of the coreutils in Rust
-
 --- A brief history of uutils
 
 - Started in August of 2013 by Jordi Boggiano
@@ -149,6 +149,8 @@ Cross-platform reimplementation of the coreutils in Rust
 - GNU is most familiar
 - Every quirk is used by _someone_
 
+<img width="40%" src="gnu-results.png">
+
 ---
 
 <div style="text-align: center; margin-bottom: 1em;">
@@ -157,27 +159,74 @@ The problem:
 
 # `C != Rust`
 
---- Differences between C and Rust
+--- The Topic
 
-- Memory management
-- Strings
-- Error handling
-- Enums
-- Async
-- etc.
+**Emulating C behaviour in Rust**
 
 ---
 
 Case Study 1
 
-# Error handling
+# Error Handling
 
----
+--- The C Way
 
-GNU coreutils deals with errors in two ways:
+GNU coreutils deal with errors in two ways:
 
 1. Exit immediately
 2. Store exit code for later
+
+Error are usually printed immediately
+
+--- The Rust Way
+
+- `Result`
+- It's great to know which functions can fail!
+- `?` is great too!
+- Exit: bubble up the `Err`
+- Store exit code: ???
+
+--- Requirements for our solution
+
+- In the style of Rust
+- Control of exit code
+- With convenient API for the GNU-style error handling
+- Must work well with IO errors
+
+--- The uutils error trait: exit code
+
+```rust
+trait UError: Error + Send {
+    fn code(&self) -> i32 { ... }
+}
+
+type UResult<T> = Result<T, Box<dyn UError>>;
+```
+
+--- IO Errors
+
+```rust
+std::fs::copy(a, b).map_err_context(|| {
+    format!("cannot copy {} to {}", a.quote(), b.quote())
+});
+```
+(Inspired by `anyhow` and `eyre`, of course)
+
+--- Storing exit code
+
+```rust
+// Prints the error and stores the exit code
+show!(some_uerror);
+```
+
+It's not very idiomatic but it works really well for our use case
+
+--- Error Handling Lessons
+
+- `Result` is great!
+- Error handling in Rust requires more "design"
+- Don't be afraid to make custom error handling
+- Practicality over purity
 
 ---
 
@@ -185,32 +234,147 @@ Case Study 2
 
 # Argument Parsing
 
+--- The C Way
+
+```C
+while ((c = getopt(argc, argv, "ab:")) != -1) {
+  switch (c) {
+    case 'a':
+      aflag = 1;
+      break;
+    case 'b':
+      bvalue = optarg;
+      break;
+    case '?':
+    default:
+      abort();
+    }
+}
+```
+
+--- There's a lot not to like there
+
+- `-1` as error value
+- Specifying arguments as a string
+- Modifying globals
+- No exhaustiveness checking
+- Error messages not automatic
+- etc.
+
 --- The Rust Way
 
-- uutils uses clap
-- clap is great!
-- ... for new projects
-- clap "collects" all results into a final data structure
-- this is really useful!
-- but some information about ordering is ignored
-- we have to resort to long workarounds in some cases
+- `clap` is great!
+- Automatic `--help`, error messages, completions, etc.
+- `clap` "collects" all results into a final data structure
+- Builder API: Into a `HashMap`
+- Derive API: Into custom `struct`
 
---- An example from ls
+--- Clap in uutils
 
-- Example: ls `-o` and `-g` and `-l` 
+- We use `clap` at the moment
+- Though the derive API is not flexible enough
+- Sometimes it is hard
 
---- A new argument parser
+--- A problem in ls (and in other utils)
 
-- solution: new argument parsing library
-- Not a struct but an enum to derive on!
+The `-o` flag does two things:
+- Use the `-l` format,
+- Hide the group.
+
+Setting `-o -C -l` is the same as `-o`
+
+It is _partially overridden_ by other arguments!
+
+This is possible but very hard in `clap`
+
+--- Other problems
+
+```bash
+head -10 some_file.txt  # clap doesn't have the -N
+seq -s= 10              # clap uses = as separator
+# etc.
+```
 
 ---
 
-# `link`
+Small incompatibilities sneak in
 
+And workarounds lead to overcomplicated code!
+
+<div style="font-size: 0.5em;">
+
+Note: _none_ of this is `clap`'s fault! It's a great library, it's just not made for coreutils.
+
+</div>
+
+--- A new argument parser (WIP)
+
+- Solution: custom argument parser!
+- Derive not on a `struct` but an `enum`
+- Mirrors the _structure_ of `getopt`
+- So the default behaviour is the same
+
+--- Small preview (sample from ls)
+
+```rust
+#[derive(Arguments)]
+enum Arg {
+    /// Do not ignore entries starting with .
+    #[option("-a")]
+    All,
+
+    /// Sort by WORD
+    #[option("--sort=WORD")]
+    #[option("-t", default = Sort::Time, help = "Sort by time")]
+    Sort(Sort),
+}
+
+struct Settings {
+    which_files: Files,
+    sort: Sort,
+}
+
+impl Options<Arg> for Settings {
+    fn apply(&mut self, arg: Arg) {
+        match arg {
+            Arg::All => self.which_files = Files::All,
+            Arg::AlmostAll => self.which_files = Files::AlmostAll,
+            Arg::Sort(s) => self.sort = s,
+        }
+    }
+}
+```
+
+--- Argument Parsing Lessons
+
+- Defaults matter!
+- We can take the best ideas from other libraries
+- And apply them in our own way
+
+--- Final Words
+
+- We care about compatibility!
+- But compatibility is hard!
+
+--- Links
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+<div>
+
+Come talk to me!
+- During the break
 - [@tertsdiepraam on GitHub](https://github.com/tertsdiepraam/)
 - [@terts@mastodon.online](https://mastodon.online/@terts)
 
-- [uutils homepage](https://uutils.github.io/)
+</div>
+<div>
+
+Links to uutils
+- [uutils.github.io](https://uutils.github.io/)
 - [uutils/coreutils on GitHub](https://github.com/uutils/coreutils)
 - [uutils Discord](https://discord.gg/wQVJbvJ)
+
+</div>
+</div>
+
+---
