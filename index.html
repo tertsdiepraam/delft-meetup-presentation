@@ -1,0 +1,1076 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>uutils coreutils</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
+
+</head>
+<body>
+    <style>.button {
+  color: black;
+  font-size: 3rem;
+  text-decoration: none;
+  border: none;
+  background: none;
+}
+
+.button.inactive {
+  visibility: hidden;
+}
+
+h1 {
+  margin: 0em;
+}
+
+h1.subtitle {
+  font-size: 1em;
+  color: #444;
+  margin: 0em;
+}
+
+html, body {
+  margin: 0;  
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+pre {
+  font-size: 0.7em;
+}
+
+pre > code {
+  padding: 0.5em 1em !important;
+}
+
+p, ul {
+  margin: 0.2em 0em;
+}
+
+body {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) max-content max-content;
+  font-size: 3.5rem;
+  font-family: Lato, sans-serif;
+}
+
+.slide {
+  display: none;
+}
+
+.slide.active-slide {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: max-content minmax(0, 1fr);
+}
+
+.slide .title {
+  width: 100%;
+  color: white;
+  background: #c04828;
+  font-size: 0.7em;
+  font-weight: 700;
+}
+
+.slide .title div {
+  margin: 0.2em 0.5em;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.slide-content-container {
+  max-height: 100%;
+  width: calc(100vw - 4em);
+  overflow: scroll;
+}
+
+.slide-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+li {
+  margin: 0.5em;
+}
+
+li > p {
+  margin: 0em;
+}
+
+code {
+  background: #ddd;
+  border-radius: 0.2em;
+  padding: 0 0.2em;
+}
+
+a {
+  color: black;
+}
+
+footer {
+  display: flex;
+  font-size: 0.5em;
+  color: grey;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+footer > *:first-child, footer > *:last-child {
+  margin: 0em 1em;
+}
+
+footer .info {
+  flex: 1;
+}
+
+#progress {
+  --progress: 0%;
+  height: 0.2em;
+}
+
+#progress::before {
+  position: absolute;
+  height: 0.2em;
+  background: #c04828;
+  width: var(--progress);
+  content: "";
+  transition: width 0.2s;
+}
+
+#goto-modal {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  font-size: 4em;
+}
+
+#goto-modal input {
+  font-size: 4rem;
+  box-shadow: 0px 5px 10px grey;
+  border: none;
+  border-radius: 0.2em;
+  -moz-appearance: textfield;
+  text-align: center;
+}</style>
+    
+        <div class="slide">
+            <div class="title hidden">
+                <div>
+                
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <img style="width: 7em; text-align: center;" src="https://uutils.github.io/logo.svg">
+<h1>uutils coreutils</h1>
+<h1 class="subtitle">&amp; the quest for compatibility</h1>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                whoami
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>
+<p>Terts Diepraam</p>
+</li>
+<li>
+<p>Recent graduate of TU Delft</p>
+</li>
+<li>
+<p>A maintainer on uutils since 2021</p>
+</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                uname
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <h1>uutils coreutils</h1>
+<p>Cross-platform reimplementation of the coreutils in Rust</p>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                GNU Coreutils
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <div style="margin: auto; gap: 4px; font-size: 0.5em; display: grid; grid-template-columns: repeat(auto-fit, 11ch); grid-auto-flow: row; width: 100%;">
+<span><code>arch</code></span>
+<span><code>b2sum</code></span>
+<span><code>base</code></span>
+<span><code>basename</code></span>
+<span><code>basenc</code></span>
+<span><code>cat</code></span>
+<span><code>chgrp</code></span>
+<span><code>chmod</code></span>
+<span><code>chown</code></span>
+<span><code>chroot</code></span>
+<span><code>cksum</code></span>
+<span><code>comm</code></span>
+<span><code>cp</code></span>
+<span><code>csplit</code></span>
+<span><code>cut</code></span>
+<span><code>date</code></span>
+<span><code>dd</code></span>
+<span><code>df</code></span>
+<span><code>dir</code></span>
+<span><code>dircolors</code></span>
+<span><code>dirname</code></span>
+<span><code>du</code></span>
+<span><code>echo</code></span>
+<span><code>env</code></span>
+<span><code>expand</code></span>
+<span><code>expr</code></span>
+<span><code>factor</code></span>
+<span><code>false</code></span>
+<span><code>fmt</code></span>
+<span><code>fold</code></span>
+<span><code>groups</code></span>
+<span><code>hashsum</code></span>
+<span><code>head</code></span>
+<span><code>hostid</code></span>
+<span><code>hostname</code></span>
+<span><code>id</code></span>
+<span><code>install</code></span>
+<span><code>join</code></span>
+<span><code>kill</code></span>
+<span><code>link</code></span>
+<span><code>ln</code></span>
+<span><code>logname</code></span>
+<span><code>ls</code></span>
+<span><code>md5sum</code></span>
+<span><code>mkdir</code></span>
+<span><code>mkfifo</code></span>
+<span><code>mknod</code></span>
+<span><code>mktemp</code></span>
+<span><code>more</code></span>
+<span><code>mv</code></span>
+<span><code>nice</code></span>
+<span><code>nl</code></span>
+<span><code>nohup</code></span>
+<span><code>nproc</code></span>
+<span><code>numfmt</code></span>
+<span><code>od</code></span>
+<span><code>paste</code></span>
+<span><code>pathchk</code></span>
+<span><code>pinky</code></span>
+<span><code>pr</code></span>
+<span><code>printenv</code></span>
+<span><code>printf</code></span>
+<span><code>ptx</code></span>
+<span><code>pwd</code></span>
+<span><code>readlink</code></span>
+<span><code>realpath</code></span>
+<span><code>relpath</code></span>
+<span><code>rm</code></span>
+<span><code>rmdir</code></span>
+<span><code>seq</code></span>
+<span><code>sha1sum</code></span>
+<span><code>sha224sum</code></span>
+<span><code>sha256sum</code></span>
+<span><code>sha384sum</code></span>
+<span><code>sha512sum</code></span>
+<span><code>shred</code></span>
+<span><code>shuf</code></span>
+<span><code>sleep</code></span>
+<span><code>sort</code></span>
+<span><code>split</code></span>
+<span><code>stat</code></span>
+<span><code>stdbuf</code></span>
+<span><code>stty</code></span>
+<span><code>sum</code></span>
+<span><code>sync</code></span>
+<span><code>tac</code></span>
+<span><code>tail</code></span>
+<span><code>tee</code></span>
+<span><code>test</code></span>
+<span><code>timeout</code></span>
+<span><code>touch</code></span>
+<span><code>tr</code></span>
+<span><code>true</code></span>
+<span><code>truncate</code></span>
+<span><code>tsort</code></span>
+<span><code>tty</code></span>
+<span><code>uname</code></span>
+<span><code>unexpand</code></span>
+<span><code>uniq</code></span>
+<span><code>unlink</code></span>
+<span><code>uptime</code></span>
+<span><code>users</code></span>
+<span><code>vdir</code></span>
+<span><code>wc</code></span>
+<span><code>who</code></span>
+<span><code>whoami</code></span>
+<span><code>yes</code></span>
+</div>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                GNU Coreutils
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>Set of utilities you probably have on your system</li>
+<li>&quot;Standard library of Bash&quot;</li>
+<li>Written in C</li>
+<li>Maintained by the FSF</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                A brief history of uutils
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>Started in August of 2013 by Jordi Boggiano</li>
+<li>2 years before Rust 1.0!</li>
+<li>Several maintainers over the years</li>
+<li>2020: Sylvestre Ledru put focus on GNU compatibility</li>
+<li>Active maintainers: Sylvestre Ledru, Daniel Hofstetter and me</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Compatibility
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>No compatibility? No chance of adoption</li>
+<li>GNU is most familiar</li>
+<li>Every quirk is used by <em>someone</em></li>
+</ul>
+<img width="40%" src="https://github.com/uutils/coreutils-tracking/blob/main/gnu-results.png?raw=true">
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title hidden">
+                <div>
+                
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <div style="text-align: center; margin-bottom: 1em;">
+The problem:
+</div>
+<h1><code>C != Rust</code></h1>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                The Topic
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <p><strong>Emulating C behaviour in Rust</strong></p>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title hidden">
+                <div>
+                
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <p>Case Study 1</p>
+<h1>Error Handling</h1>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                The C Way
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <p>GNU coreutils deal with errors in two ways:</p>
+<ol>
+<li>Exit immediately</li>
+<li>Store exit code for later</li>
+</ol>
+<p>Error are usually printed immediately</p>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                The Rust Way
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li><code>Result</code></li>
+<li>It's great to know which functions can fail!</li>
+<li><code>?</code> is great too!</li>
+<li>Exit: bubble up the <code>Err</code></li>
+<li>Store exit code: ???</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Requirements for our solution
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>In the style of Rust</li>
+<li>Control of exit code</li>
+<li>With convenient API for the GNU-style error handling</li>
+<li>Must work well with IO errors</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                The uutils error trait: exit code
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <pre><code class="language-rust">trait UError: Error + Send {
+    fn code(&amp;self) -&gt; i32 { ... }
+}
+
+type UResult&lt;T&gt; = Result&lt;T, Box&lt;dyn UError&gt;&gt;;
+</code></pre>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                IO Errors
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <pre><code class="language-rust">std::fs::copy(a, b).map_err_context(|| {
+    format!(&quot;cannot copy {} to {}&quot;, a.quote(), b.quote())
+});
+</code></pre>
+<p>(Inspired by <code>anyhow</code> and <code>eyre</code>, of course)</p>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Storing exit code
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <pre><code class="language-rust">// Prints the error and stores the exit code
+show!(some_uerror);
+</code></pre>
+<p>It's not very idiomatic but it works really well for our use case</p>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Error Handling Lessons
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li><code>Result</code> is great!</li>
+<li>Error handling in Rust requires more &quot;design&quot;</li>
+<li>Don't be afraid to make custom error handling</li>
+<li>Practicality over purity</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title hidden">
+                <div>
+                
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <p>Case Study 2</p>
+<h1>Argument Parsing</h1>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                The C Way
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <pre><code class="language-C">while ((c = getopt(argc, argv, &quot;ab:&quot;)) != -1) {
+  switch (c) {
+    case 'a':
+      aflag = 1;
+      break;
+    case 'b':
+      bvalue = optarg;
+      break;
+    case '?':
+    default:
+      abort();
+    }
+}
+</code></pre>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                There's a lot not to like there
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li><code>-1</code> as error value</li>
+<li>Specifying arguments as a string</li>
+<li>Modifying globals</li>
+<li>No exhaustiveness checking</li>
+<li>Error messages not automatic</li>
+<li>etc.</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                The Rust Way
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li><code>clap</code> is great!</li>
+<li>Automatic <code>--help</code>, error messages, completions, etc.</li>
+<li><code>clap</code> &quot;collects&quot; all results into a final data structure</li>
+<li>Builder API: Into a <code>HashMap</code></li>
+<li>Derive API: Into custom <code>struct</code></li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Clap in uutils
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>We use <code>clap</code> at the moment</li>
+<li>Though the derive API is not flexible enough</li>
+<li>Sometimes it is hard</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                A problem in ls (and in other utils)
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <p>The <code>-o</code> flag does two things:</p>
+<ul>
+<li>Use the <code>-l</code> format,</li>
+<li>Hide the group.</li>
+</ul>
+<p>Setting <code>-o -C -l</code> is the same as <code>-o</code></p>
+<p>It is <em>partially overridden</em> by other arguments!</p>
+<p>This is possible but very hard in <code>clap</code></p>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Other problems
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <pre><code class="language-bash">head -10 some_file.txt  # clap doesn't have the -N
+seq -s= 10              # clap uses = as separator
+# etc.
+</code></pre>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title hidden">
+                <div>
+                
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <p>Small incompatibilities sneak in</p>
+<p>And workarounds lead to overcomplicated code!</p>
+<div style="font-size: 0.5em;">
+<p>Note: <em>none</em> of this is <code>clap</code>'s fault! It's a great library, it's just not made for coreutils.</p>
+</div>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                A new argument parser (WIP)
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>Solution: custom argument parser!</li>
+<li>Derive not on a <code>struct</code> but an <code>enum</code></li>
+<li>Mirrors the <em>structure</em> of <code>getopt</code></li>
+<li>So the default behaviour is the same</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Small preview (sample from ls)
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <pre><code class="language-rust">#[derive(Arguments)]
+enum Arg {
+    /// Do not ignore entries starting with .
+    #[option(&quot;-a&quot;)]
+    All,
+
+    /// Sort by WORD
+    #[option(&quot;--sort=WORD&quot;)]
+    #[option(&quot;-t&quot;, default = Sort::Time, help = &quot;Sort by time&quot;)]
+    Sort(Sort),
+}
+
+struct Settings {
+    which_files: Files,
+    sort: Sort,
+}
+
+impl Options&lt;Arg&gt; for Settings {
+    fn apply(&amp;mut self, arg: Arg) {
+        match arg {
+            Arg::All =&gt; self.which_files = Files::All,
+            Arg::AlmostAll =&gt; self.which_files = Files::AlmostAll,
+            Arg::Sort(s) =&gt; self.sort = s,
+        }
+    }
+}
+</code></pre>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Argument Parsing Lessons
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>Defaults matter!</li>
+<li>We can take the best ideas from other libraries</li>
+<li>And apply them in our own way</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Final Words
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <ul>
+<li>We care about compatibility!</li>
+<li>But compatibility is hard!</li>
+</ul>
+
+                </div>
+            </div>
+        </div>        
+    
+
+        <div class="slide">
+            <div class="title">
+                <div>
+                Links
+                </div>
+            </div>
+            <div class="slide-content-container">
+                <div class="slide-content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+<div>
+<p>Come talk to me!</p>
+<ul>
+<li>During the break</li>
+<li><a href="https://github.com/tertsdiepraam/">@tertsdiepraam on GitHub</a></li>
+<li><a href="https://mastodon.online/@terts">@terts@mastodon.online</a></li>
+</ul>
+</div>
+<div>
+<p>Links to uutils</p>
+<ul>
+<li><a href="https://uutils.github.io/">uutils.github.io</a></li>
+<li><a href="https://github.com/uutils/coreutils">uutils/coreutils on GitHub</a></li>
+<li><a href="https://discord.gg/wQVJbvJ">uutils Discord</a></li>
+</ul>
+</div>
+</div>
+
+                </div>
+            </div>
+        </div>        
+    
+    <footer>
+        <div class="info">Terts Diepraam, Rust at TU Delft, 2023-10-26</div>
+        <div>
+          <span id="current-page-num"></span>/<span id="max-page-num"></span>
+        </div>
+        <div class="buttons">
+            <button id="prev-button" class="button" onclick="prevSlide()">&lt;</button>
+            <button id="next-button" class="button" onclick="nextSlide()">&gt;</button>
+        </div>
+    </footer>
+    <div id="progress"></div>
+    <div id="goto-modal" class="hidden"><input id="goto-modal-input" type="number"></div>
+    <script>let currentSlide = parseInt(new URLSearchParams(window.location.search).get("slide") ?? 0);
+const maxSlides = document.getElementsByClassName("slide").length;
+const modal = document.getElementById("goto-modal");
+const modalInput = document.getElementById("goto-modal-input");
+
+document.getElementById("current-page-num").innerHTML = currentSlide + 1;
+document.getElementById("max-page-num").innerHTML = maxSlides;
+
+function hideAllSlides() {
+  document.querySelector(".active-slide")?.classList.remove("active-slide");
+}
+
+function showSlide(i) {
+  i = Math.max(0, Math.min(maxSlides - 1, i));
+  hideAllSlides();
+  currentSlide = i;
+  document.getElementsByClassName("slide")[i].classList.add("active-slide");
+  document.getElementById("progress").style.setProperty(
+    "--progress",
+    Math.round(i / (maxSlides - 1) * 100) + "%",
+  );
+  document.getElementById("current-page-num").innerHTML = currentSlide + 1;
+
+  let url = new URL(document.location.href);
+  url.searchParams.set("slide", i);
+  history.replaceState(null, null, url);
+}
+
+function nextSlide() {
+  if (currentSlide === maxSlides - 1) {
+    return;
+  }
+  showSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+  if (currentSlide === 0) {
+    return;
+  }
+  showSlide(currentSlide - 1);
+}
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+    console.log(event.key);
+    if (event.key === "g") {
+        event.preventDefault();
+        if (modal.classList.contains("hidden")) {
+          modal.classList.remove("hidden");
+          modalInput.focus();
+          modalInput.select();
+        } else {
+          modal.classList.add("hidden");
+        }
+    }
+    if (!modal.classList.contains("hidden")) {
+      return;
+    }
+    switch (event.key) {
+      case "ArrowLeft":
+      case "a":
+      case "PageUp":
+        event.preventDefault();
+        prevSlide();
+        break;
+      case "ArrowRight":
+      case "d":
+      case " ":
+      case "PageDown":
+        event.preventDefault();
+        nextSlide();
+        break;
+      case "Home":
+        event.preventDefault();
+        showSlide(0);
+        break;
+      case "End":
+        event.preventDefault();
+        showSlide(maxSlides - 1);
+        break;
+    }
+  }
+);
+
+modalInput.addEventListener("change", (event) => {
+  let slide = parseInt(modalInput.value);
+  if (!slide) {
+    return;
+  }
+  showSlide(slide - 1);
+  modal.classList.add("hidden");
+});
+
+modalInput.addEventListener("focusout", (event) => {
+  modal.classList.add("hidden");
+});
+
+showSlide(currentSlide);
+
+
+// CONTROLLER STUFF
+
+const controllers = {};
+const lastButtons = {};
+
+function connecthandler(e) {
+  addgamepad(e.gamepad);
+}
+
+function addgamepad(gamepad) {
+  lastButtons[gamepad.index] = { 7: false, 8: false, 9: false, 10: false };
+  controllers[gamepad.index] = gamepad;
+}
+
+function disconnecthandler(e) {
+  removegamepad(e.gamepad);
+}
+
+function removegamepad(gamepad) {
+  delete lastButtons[gamepad.index];
+  delete controllers[gamepad.index];
+}
+
+window.addEventListener("gamepadconnected", connecthandler);
+window.addEventListener("gamepaddisconnected", disconnecthandler);
+
+function updateStatus() {
+  for (const controller of Object.values(controllers)) {
+    const buttons = controller.buttons;
+    const pressed = (n) => {
+      return buttons[n].pressed && !lastButtons[controller.index][n];
+    };
+
+    if (pressed(7)) {
+      document.querySelector(".active-slide .slide-content-container").scrollBy({
+        top: -500,
+        left: 0,
+        behavior: "smooth"
+      });
+    } else if (pressed(8)) {
+      document.querySelector(".active-slide .slide-content-container").scrollBy({
+        top: 500,
+        left: 0,
+        behavior: "smooth"
+      });
+    } else if (pressed(9)) {
+      prevSlide();
+    } else if (pressed(10)) {
+      nextSlide();
+    }
+  }
+  for (const controller of Object.values(controllers)) {
+    const buttons = controller.buttons;
+    lastButtons[controller.index][7] = buttons[7].pressed;
+    lastButtons[controller.index][8] = buttons[8].pressed;
+    lastButtons[controller.index][9] = buttons[9].pressed;
+    lastButtons[controller.index][10] = buttons[10].pressed;
+  }
+  requestAnimationFrame(updateStatus);
+}
+
+updateStatus();
+
+</script>
+    <script>hljs.highlightAll();</script>
+</body>
+    
